@@ -37,8 +37,6 @@ function monta_playlist() {
 
 
 function muda_musica(itens) {
-    console.log(itens[musica_atual])
-
     var musica_tocando = itens[musica_atual.linha_musica];
 
     $('#musica_tocando').attr('src', urlServer + 'musica/' + musica_tocando.nome);

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <!-- icones materialize -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- jquery da google  -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- css personalizado -->
+    <link rel="stylesheet" href="style/estilo.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>login_logica</title>
+    <style>
+        /* cadastrar */
+        
+        #img_modal {
+            width: 200px;
+            height: auto;
+        }
+        
+        form {
+            margin-top: 10px;
+        }
+    </style>
+    <script src="src/login.js"></script>
+    <script>
+        function enviar() {
+
+
+            var form = $('#form_cad').get(0);
+            var dados = new FormData(form);
+
+
+            $.post({
+                url: urlServer + 'webservice/cadastro_usuario.php', //'http://localhost/server_leosfy/webservice/cadastro_usuario.php',
+                data: dados,
+                processData: false,
+                contentType: false,
+            }).done(function(resposta) {
+                // converto o json em um array
+                if (resposta === 'Sucesso') {
+                    window.location.href = 'login.html';
+                }
+            });
+
+        }
+
+        function validaSenha() {
+            var senha1 = $('#campo_senha').val();
+            var senha2 = $('#senha_confirm').val();
+
+            if (senha2 == senha1 && senha2 != '') {
+                $('#senha_confirm').removeClass('invalid');
+                $('#senha_confirm').addClass('valid');
+            } else {
+                $('#senha_confirm').removeClass('valid');
+                $('#senha_confirm').addClass('invalid');
+            }
+        }
+
+        function validaNome() {
+            var valor = $('#campo_nome').val();
+
+            $.get({
+                url: urlServer + 'webservice/valida_nome.php', //'http://localhost/server_leosfy/webservice/valida_nome.php',
+                data: {
+                    nome: valor,
+                }
+            }).done(function(resposta) {
+                var resultado = JSON.parse(resposta);
+
+                if (resultado.erro) {
+                    $('#campo_nome').addClass('invalid');
+                    alert(resultado.erro);
+                    return;
+                }
+
+                if (resultado.sucesso) {
+                    $('#campo_nome').removeClass('invalid');
+                    $('#campo_nome').addClass('valid');
+                }
+            })
+        }
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    $('#img')
+                        .attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+
+
+        function imgSelecionada() {
+            //   var img = $('#img_input').val();
+
+            //   var campo_img = $('#img').attr('src', "img");
+        }
+    </script>
+</head>
+
+<body class="blue-grey darken-3">
+    <h1 class="center white-text">Faça seu Registro</h1>
+    <div class="container">
+        <div class="row">
+
+            <form id="form_cad" name="cad" method="POST" class="col s12" enctype="multipart/form-data">
+                <!-- campo Nome -->
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input required onblur="validaNome()" name="nome" placeholder="" id="campo_nome" type="text" class="validate white-text" value="">
+                        <label name="nome" class="white-text" for="campo_nome">Nome</label>
+                    </div>
+                </div>
+                <!-- campo email -->
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input required name="email" placeholder="" id="campo_email" type="email" class="validate white-text">
+                        <label name="email" class="white-text" for="campo_email">Email</label>
+                    </div>
+                </div>
+                <!-- campo senha1 -->
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input required name="senha" placeholder="" id="campo_senha" type="password" class="validate white-text">
+                        <label name="senha" class="white-text" for="campo_senha">Senha</label>
+                    </div>
+                </div>
+                <!-- campo senha2 -->
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input required oninput="validaSenha()" name="senha2" placeholder="" id="senha_confirm" type="password" class="validate white-text">
+                        <label name="senha2" class="white-text" for="senha_confirm">Confirmar Senha</label>
+                    </div>
+                </div>
+                <!-- campo imagem -->
+                <div class="row" id="img_input">
+                    <div class="input-field col s12 center">
+                        <label class="white-text" style="font-size: 20px; padding-left: 32px;" for="img"> Selecione uma imagem de perfil </label>
+                        <img id="img" class="circle responsive-img" src="img/perfil_vazio.jpg" style="width: 200px; height: 190px; margin-top: 50px;">
+
+                        <input id="img_input" onchange="imgSelecionada(), readURL(this);" value="" type="file" accept="image" name="img_input" style="padding-left: 90px; width: 300px;">
+                    </div>
+                </div>
+                <a onclick="enviar()" id="bt_criar" class="btn btn-large blue darken-4 col s12" style="margin-top:0;"> Cadastrar </a>
+
+            </form>
+        </div>
+    </div>
+
+
+
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        M.AutoInit();
+        logado();
+    </script>
+</body>
+
+</html>

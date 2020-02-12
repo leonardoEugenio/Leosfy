@@ -1,0 +1,95 @@
+/* // pagina de login */
+
+body {
+    background: #EF9A9A;
+}
+
+a.btn {
+    margin-top: 30%;
+}
+
+.modal {
+    max-height: 100%;
+    overflow: hidden;
+}
+
+input[type="submit"] {
+    width: 100%;
+    margin-top: 50px;
+}
+
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 0;
+    margin: 0;
+}
+
+
+/* index */
+
+.font20 {
+    font-size: 20px;
+}
+
+#baixo {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 10;
+}
+
+#btn_add {
+    position: fixed;
+    bottom: 60px;
+    right: 5px;
+}
+
+#titulo_index {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 30px
+}
+
+#card_amigos {
+    margin-bottom: 0;
+    padding-top: 5px;
+}
+
+#info {
+    margin-top: 20px;
+}
+
+#imagem_perfil {
+    width: 100px;
+    height: 100px;
+}
+
+.img_perfil {
+    width: 60px;
+    height: 57px;
+}
+
+#btn_add {
+    z-index: 10;
+}
+
+#capa_fundo {
+    background-image: url("../img/capa_padrao.jpg");
+}
+
+#imagem_salinha {
+    text-align: center;
+    height: 120px;
+}
+
+
+
+/* pagina cadastro */
+
+input[type='file'] {
+    color: transparent;
+    /* Hides your "No File Selected" */
+    /* Sets the Control to Right-To-Left */
+}

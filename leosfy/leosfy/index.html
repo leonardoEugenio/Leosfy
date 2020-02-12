@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="style/estilo.css">
+    <!-- incones -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- jquery da google -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- js login -->
+    <script src="src/login.js"></script>
+
+    <!-- js sala -->
+    <script src="src/sala.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Index projeto perfil/salas</title>
+
+    <style>
+        .tab {
+            padding-bottom: 0;
+        }
+        
+        nav {
+            height: 49px;
+        }
+    </style>
+
+    <script>
+        // perfil
+
+        function listar_perfil() {
+
+            var id_user = usuarioLogado.id;
+
+            $.post({
+
+                url: urlServer + 'webservice/perfil.php',
+                data: {
+                    id: id_user
+                }
+
+            }).done(function(resposta) {
+                var usuario = JSON.parse(resposta);
+
+                var card = $('#modelo_perfil').html();
+
+                // ignore isso {
+                if (usuario.status == 1) {
+                    usuario.status = 'Ativo';
+                } else {
+                    usuario.status = 'Inativo';
+                }
+                // ignore até aqui }
+
+                card = card.replace('%IMG%', usuario.img_url);
+                card = card.replace('%NOME_PERFIL%', usuario.nome);
+                card = card.replace('%EMAIL_PERFIL%', usuario.email);
+                card = card.replace('%STATUS%', usuario.status);
+                card = card.replace('%CODIGO_PERFIL%', usuario.id_usuario);
+
+
+
+                $('#perfil_index').append(card);
+            })
+        }
+
+
+        function abrir_modal(id) {
+            $('#btn_entrar').attr('id_sala', id)
+            console.log(id);
+            $('#modal_es').modal().modal('open');
+        }
+
+        function fechar() {
+            $('#modal_es').modal().modal('close');
+        }
+
+        function entrar_sala(elemento) {
+            var id = $(elemento).attr('id_sala');
+            var senha = $('#senha_sala').val();
+
+            $.post({
+                url: urlServer + 'webservice/sala_senha.php',
+                data: {
+                    id: id,
+                    senha: senha,
+                },
+            }).done(function(resposta) {
+                var sala = JSON.parse(resposta);
+                console.log(sala);
+                if (sala.id) {
+
+                    localStorage.setItem('Sala', JSON.stringify(sala));
+                    window.location.href = "sala.html?id_sala=" + sala.id;
+                } else {
+                    alert('senha invalida');
+                }
+            })
+        }
+
+    </script>
+</head>
+
+<body class="conatiner blue-grey darken-3">
+    <nav>
+        <div class="row" style="margin-bottom: 0;">
+            <div class="nav-wrapper blue darken-4 center">
+                <a href="index.html" class="btn white black-text waves-effect waves-light" style="margin-top: 0px;">Atualizar Salas</a>
+            </div>
+        </div>
+    </nav>
+    <div id="salas" class="row">
+        <!-- modelo de salas -->
+        <h2 id="titulo_index" class="center white-text">Salas</h2>
+        <div id="lista_salas">
+
+            <div id="btn_add" class="left">
+                <a class="btn-floating btn-large waves-effect waves-light darken-4 modal-trigger" href="#criar_sala"><i
+                        class="material-icons">add</i></a>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- modelo de perfil -->
+
+    <div id="perfil_index" class="row" style="padding-bottom: 45px;"></div>
+
+
+    <template id="modelo_perfil" style="z-index: 15 ;">
+
+            <div id="info">
+                <div class="center">
+                    <div id="capa_fundo" class="col s12" style="padding-top: 10%; padding-bottom: 10%;">
+                        <img id="imagem_perfil" src="%IMG%" alt="" class="circle responsive-img">
+                    </div>
+                </div>
+
+                <div class="col s12">
+                    <h3 id="nome_perfil" class="white-text font20 center">NOME</h3>
+                    <p for="nome_perfil" class="center font20 grey-text">%NOME_PERFIL%</p>
+                </div>
+                <div class="col s12">
+                    <h3 id="email_perfil" class="white-text font20 center">E-MAIL</h3>
+                    <p for="email_perfil" class="center font20 grey-text">%EMAIL_PERFIL%</p>
+                </div>
+                <div class="col s12">
+                    <h3 id="status_perfil" class="white-text font20 center">STATUS DO USUÁRIO</h3>
+                    <p id="statuss" for="status_perfil" class="center font20 grey-text">%STATUS%</p>
+                </div>
+                <div class="col s12">
+                    <h3 id="codigo_perfil" class="white-text font20 center">SEU CODIGO</h3>
+                    <p for="codigo_perfil" class="center font20 grey-text">%CODIGO_PERFIL%</p>
+                </div>
+                <div class="col s12">
+                    <a onclick="logout()" type="button" class="col s12 red darken-4 center font20 white-text btn-large">sair</a>
+                </div>
+            </div>
+
+        </template>
+
+
+    <footer id="baixo">
+        <nav id="qualquer" class="blue darken-4">
+            <ul class="tabs tabs-transparent">
+                <li class="tab"><a href="#salas">Salas</a></li>
+                <li class="tab"><a href="#perfil_index">perfil</a></li>
+            </ul>
+        </nav>
+    </footer>
+
+
+    <!-- divis ocutas -->
+
+    <template id="modelo_sala">
+        <div class="card">
+                <div class="row" onclick="abrir_modal('%ID%')">
+                    <div class="card-image waves-effect waves-block waves-light col s4" style="padding: 0px;">
+                        <a href="JavaScript:void(0)" class="modal-trigger">
+                            <img id="imagem_salinha" class="activator" src="%IMG_URL_SALA%">
+                        </a>
+                    </div>
+                    <div class="card-content left">
+                        <span class="card-title activator grey-text text-darken-4">%SALA%
+                            <p><a href="JavaScript:void(0)" class="modal-trigger">%ADM%</a></p>
+                    </div>
+                </div>
+            </div>
+    </template>
+
+    <template id="spinner">
+        <div class="preloader-wrapper big active">
+            <div class="spinner-layer spinner-blue-only">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Modal Structure -->
+    <div id="modal_es" class="modal">
+        <div id="form_senha" class="form">
+            <div class="row" style="margin-bottom: 0;">
+                <div class="input-field col s12">
+                    <label name="senha_sala" for="senha">Senha:</label>
+                    <input id="senha_sala" name="senha_sala" id="senha" type="password">
+                </div>
+                <a onclick="entrar_sala(this)" class="btn center light-blue darken-4 col s12 waves-effect waves-light" type="submit" style="margin-top: 0px;" id="btn_entrar">Entrar</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="criar_sala" class="modal container">
+        <div class="modal-content row">
+            <h3>Criar Sala</h3>
+
+            <div class="row">
+                <form action="JavaScript:void(0)" id="form_sala" method="POST" class="col s12" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">create</i>
+                            <input name="nome" id="icon_prefixx" type="text" class="validate">
+                            <label name="nome" for="icon_prefixx">Nome da sala</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <i class="material-icons prefix">lock</i>
+                            <input name="senha" id="icon_telephone" type="password" class="validate">
+                            <label name="senha" for="icon_telephone">senha</label>
+                        </div>
+                        <div class="col s12">
+                            <label name="img" class="black-text"> Imagem da sala </label>
+                            <input class="col s12" name="img" type="file">
+                            <input type="hidden" id="id_adm" name="id_adm">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#!" class="modal-close waves-effect waves-light btn red lighten-2 left">Sair</a>
+                        <button onclick="cadastrar_sala()" value="ok" class="modal-close waves-effect waves-light btn blue darken-4 right">Criar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--JavaScript at end of body for optimized loading-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        M.AutoInit();
+        naoLogado();
+        listar_perfil();
+        listar_sala();
+    </script>
+</body>
+
+</html>

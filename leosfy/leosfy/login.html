@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- google jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- js login -->
+    <script src="src/login.js">
+        logado();
+    </script>
+    <!-- css personalizado -->
+    <link rel="stylesheet" href="style/estilo.css">
+
+    <title>Projeto</title>
+
+    <script>
+        $(document).ready(function() {
+            $('.modal').modal();
+        });
+    </script>
+</head>
+
+<body class="blue blue-grey darken-3">
+    <header class="container center">
+        <div class="row">
+            <h1 class="white-text">Faça seu Login</h1>
+        </div>
+    </header>
+
+    <div class="container center">
+        <a href="#login" class="btn btn-large modal-trigger blue darken-4">Login</a>
+    </div>
+    <!-- divis ocutas -->
+
+    <div id="login" class="modal">
+        <h5 class="modal-close">&#10005;</h5>
+        <div class="modal-content center">
+            <h4>Faça o Login</h4>
+            <a class="" href="cadastro_usuario.html">Ou cadastre-se gratuitamente</a>
+            <br>
+
+            <form action="javascript:void(0)" method="POST" name="form_log" id="form_log">
+
+                <div class="input-field">
+                    <i class="material-icons prefix">person</i>
+                    <input name="nome" id="nome" type="text" id="name">
+                    <label for="nome">Username</label>
+                </div>
+                <br>
+
+                <div class="input-field">
+                    <i class="material-icons prefix">lock</i>
+                    <input id="senha" name="senha" type="password" id="pass">
+                    <label for="senha">Password</label>
+                </div>
+                <br>
+
+
+
+                <button onclick="logar()" class="btn btn-large blue darken-4"> Login </button>
+
+            </form>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        M.AutoInit();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="style/estilo.css">
+    <!-- incones -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+    <!-- js login -->
+    <script src="src/login.js"></script>
+    <!-- js sala -->
+    <script src="src/sala.js"></script>
+    <!-- js playlist -->
+    <script src="src/playlist.js"></script>
+    <!-- js musica -->
+    <script src="src/musica.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title id="leosfy"></title>
+
+    <style>
+        .tab {
+            padding-bottom: 0;
+        }
+
+        nav {
+            height: 49px;
+        }
+    </style>
+
+    <script>
+        monta_playlist();
+        function atualizar_pagina_sala() {
+            window.location.href = 'sala.html';
+        }
+    </script>
+</head>
+
+<body id="body" class="conatiner blue-grey darken-3">
+
+    <audio preload="auto" id="musica_tocando">
+        <source src="" type="audio/mpeg">
+    </audio>
+
+    <div class="col s12  offset-m2 l6 offset-l3">
+        <div id="info" class="card-panel z-depth-1 blue darken-3" style="margin: 0 ;position: fixed; width: 100%;">
+            <div class="row valign-wrapper" style="margin: 0"></div>
+            <div class="left" style="margin-right: 10px;">
+                <img onclick="atualizar_pagina_sala()" id="img" src="" style="height: 100px; width: auto;">
+                <!-- notice the "circle" class -->
+            </div>
+            <div class="col s12">
+                <h4 id="nome_sala" class="left" style="margin-bottom: 0; margin-top: 0; ">
+                    <span id="nome_sala"></span>
+                </h4>
+                <br>
+                <br>
+                <strong class="left">
+                    Dono:
+                    <span id="adm"></span>
+                </strong>
+            </div>
+            <a href="index.html" class="btn red accent-4 waves-effect waves-light" style="margin-top: 27px;">Sair da
+                Sala</a>
+        </div>
+    </div>
+
+
+    <div class="row section scrollspy" style="padding: 0; padding-top: 25%">
+        <div class="col s12 white" style="margin-bottom: 32%; margin-top: 16%;">
+            <table class="highlight">
+                <thead>
+                    <tr>
+                        <th>Musica</th>
+                        <th>Enviado por</th>
+                    </tr>
+                </thead>
+
+                <tbody id="musicas">
+
+                </tbody>
+            </table>
+            <div>
+                <a class="btn blue darken-4 waves-light modal-trigger col s12" href="#add_musica"
+                    style="margin-top: 0;    margin-bottom: 4% ; z-index: 10;">Adicionar Musica</a>
+            </div>
+        </div>
+    </div>
+    <footer id="baixo" class="blue-grey">
+        <div class="center">
+            <div class="row">
+                <div class="col s12">
+
+                    <div class="progress blue lighten-4">
+                        <div id="barra_progreso" class="determinate blue darken-4">
+                        </div>
+                    </div>
+
+                    <div>
+
+                        <div class="col s12" style="padding: 0px; margin: 0px;">
+                            <strong id="musica_play" class=""></strong>
+                        </div>
+                        <div class="col s12" style="padding: 0px;">
+                            <span id="">enviada por : </span><strong id="enviado"></strong>
+                        </div>
+
+
+                        <div class="row" style="padding: 0px; margin: 0px;">
+                            <div class="col s4 left">
+                                <a onclick="anterior()" class="btn blue darken-4 waves-effect waves-light" href="#">
+                                    <i class="material-icons">navigate_before</i>
+                                </a>
+                            </div>
+                            <div class="col s4">
+                                <a id='btn' onclick="play()" class="btn blue darken-4 waves-effect waves-light"
+                                    href="javascript:void(0)">
+                                    <i id="icone_play_pause" class="material-icons">play_arrow</i>
+                                </a>
+                            </div>
+                            <div class="col s4">
+                                <a onclick="proximo()" class="btn blue darken-4 waves-effect waves-light"
+                                    href="javascript:void(0)">
+                                    <i class="material-icons">navigate_next</i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </footer>
+
+    <!-- divis ocultas -->
+
+    <div id="add_musica" class="modal row card center">
+        <div class="row">
+            <form method="POST" enctype="multipart/form-data">
+                <div class="right col s12">
+                    <h5>Pesquise uma Musica</h5>
+                    <input name='pesquisa_musica' id="pesquisa_musica" type="text" oninput="pesquisa()">
+                </div>
+            </form>
+        </div>
+        <div id="resultado">
+        </div>
+        <ul class="z-depth-5" id="lista_musica">
+
+        </ul>
+    </div>
+
+    <!-- divs ocultas -->
+    <template id="upload_musicas">
+        <div class="row">
+            <h5 class="red-text">Não encontramos</h5>
+            <h6 class="red-text">Deseja fazer upload</h6>
+            <form id="form_musica" action="javascript:void(0)" method="post" enctype="multipart/form-data">
+                <div class="row center">
+                    <div class="input-field col s12">
+                        <input id="nome" type="text" required>
+                        <label for="nome">digite o nome da musica</label>
+                    </div>
+                </div>
+                <input id="musica_up" oninput="upload_musica()" style="margin: 5%; margin-left:33%" type="file"
+                    name="musica" id="musica">
+            </form>
+        </div>
+    </template>
+    <!-- divs ocultas -->
+    <template id="modelo_musica">
+        <li id="musica">
+            <a class="btn-large waves-effect light-blue darken-1 col s12" href="#" onclick='add_musica(ID)'
+                style="font-size: 12px">%MUSICA%</a>
+        </li>
+    </template>
+    <template id="itens_tabela">
+
+        <tr onclick="click_musica('%ID_MUSICA%')" id="musica_lista">
+            <td id="musica">%MUSICA%</td>
+            <td>%USUARIO%</td>
+        </tr>
+
+    </template>
+
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        M.AutoInit();
+        naoLogado();
+        infoSala();
+    </script>
+</body>
+
+</html>

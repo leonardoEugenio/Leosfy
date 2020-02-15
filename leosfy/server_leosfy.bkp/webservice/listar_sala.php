@@ -15,7 +15,7 @@
         
         $lista = [];
         foreach ($salas as $sala) {
-            $sala['img_url'] = $url_server . 'server_leosfy/upload_sala/' . $sala['imagem'];
+            $sala['img_url'] = $url_server . 'upload_sala/' . $sala['imagem'];
             $sala['sala_url'] = 'sala.html?id=' . $sala["id_sala"];
             $lista[] = $sala;
         }

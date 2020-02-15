@@ -1,4 +1,4 @@
-var urlServer = 'https://leofy.000webhostapp.com/server_leosfy/';
+var urlServer = 'http://localhost/server_leosfy.bkp/';
 
 var usuarioLogado = JSON.parse(localStorage.getItem('User'));
 

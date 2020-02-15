@@ -1,6 +1,6 @@
 <?php
-    $url_server = 'https://leofy.000webhostapp.com/';
-    $conexao = mysqli_connect("localhost","id11098704_root", "123123", "id11098704_leosfy");
+    $url_server = 'http://localhost/server_leosfy.bkp/';
+    $conexao = mysqli_connect("localhost","root", " ", "leosfy");
 
     // if(mysqli_connect_errno()){
     //     die("Falha na conexão: " . mysqli_connect_error());//não devemos fazer esse comando  mysqli_connect_error(), pois ele espana inforrmações doservidor

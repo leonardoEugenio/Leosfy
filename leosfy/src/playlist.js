@@ -1,4 +1,6 @@
-var musica_atual = [id_musica = 0, linha_musica = 0];
+var musica_atual = 0;
+
+var linha_musica = 0
 
 var playlist;
 
@@ -37,28 +39,25 @@ function monta_playlist() {
 
 
 function muda_musica(itens) {
-    var musica_tocando = itens[musica_atual.linha_musica];
-
+    var musica_tocando = itens[musica_atual];
     $('#musica_tocando').attr('src', urlServer + 'musica/' + musica_tocando.nome);
-    $('#leosfy').text('Leos.Fy/' + musica_tocando.nome)
+    $('#leosfy').text('Leos.Fy/' + musica_tocando.nome);
     $('#musica_play').text(musica_tocando.nome);
     $('#enviado').text(musica_tocando.usuario);
 
 
 
     audio = document.getElementById('musica_tocando');
-
-    console.log(musica_tocando);
 }
 
 
 function play() {
-    // var nome_musica - $('#musica_tocando').attr('src')
-    audio.play();
     $('#icone_play_pause').text('pause');
     duracao = audio.duration;
     $('#btn').attr('onclick', 'pause()');
     conta_tempo();
+    audio.play();
+    
 }
 
 function pause() {
@@ -68,24 +67,29 @@ function pause() {
 }
 
 function proximo() {
-    var numero_musicas = playlist.length - 1;
-    if (musica_atual.linha_musica < numero_musicas) {
-        musica_atual.linha_musica++;
+
+    var numero_musicas = playlist.length;
+    if (musica_atual < numero_musicas -1 ) {
+        musica_atual++;
     } else {
-        musica_atual.linha_musica= 0;
+        musica_atual = 0;
     }
     muda_musica(playlist);
-    play()
+
+    audio.play()
+
 }
 function anterior() {
-    var numero_musicas = playlist.length - 1;
-    if (musica_atual.linha_musica > 0) {
-        musica_atual.linha_musica--;
+
+    var numero_musicas = playlist.length;
+    if (linha_musica > numero_musicas -1 ) {
+        musica_atual--;
     } else {
-        musica_atual.linha_musica = numero_musicas;
+
+        musica_atual = numero_musicas;
     }
     muda_musica(playlist);
-    play()
+    audio.play()
 }
 
 function conta_tempo() {
@@ -93,7 +97,7 @@ function conta_tempo() {
     setInterval(function () {
         tempo_musica = (audio.currentTime / audio.duration) * 100;
         $('#barra_progreso').attr('style', 'width: ' + tempo_musica + '%')
-        if (audio.currentTime == audio.duration) {
+        if (tempo_musica = audio.duracao) {
             proximo();
         }
     }, (1000))
@@ -103,9 +107,9 @@ function click_musica(id) {
     var i = 0
     for (; i < playlist.length; i++) {
         if (playlist[i]['id_musica'] === id) {
-            musica_atual.linha_musica = i;
+            musica_atual = i;
             muda_musica(playlist);
-            play()
+            audio.play()
             i = playlist.length;
         }
     }

@@ -1,9 +1,15 @@
 /* // pagina de login */
 
 body {
-    background: #EF9A9A;
+    height: 100%;
+    margin: 0;
 }
-
+.bg-image{
+    background-image: url('../img/bg.jpg');
+    background-position: center;
+    backdrop-filter: blur(6px);
+    height: 100%;
+}
 a.btn {
     margin-top: 30%;
 }

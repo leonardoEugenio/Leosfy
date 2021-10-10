@@ -1,6 +1,6 @@
 <?php
-    $url_server = 'http://localhost/server_leosfy.bkp/';
-    $conexao = mysqli_connect("localhost","root", " ", "leosfy");
+    $url_server = 'http://leosfy.atwebpages.com/';
+    $conexao = mysqli_connect("fdb32.awardspace.net","root", "mozão6969", "3958939_leosfy");
 
     // if(mysqli_connect_errno()){
     //     die("Falha na conexão: " . mysqli_connect_error());//não devemos fazer esse comando  mysqli_connect_error(), pois ele espana inforrmações doservidor
@@ -14,3 +14,4 @@
      * Ex.: aplicativo de celuar
      */
     header('Access-Control-Allow-Origin: *');
+?>
